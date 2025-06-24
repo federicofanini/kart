@@ -1,18 +1,19 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ChampionshipStandings } from "@/components/championship-standings";
 import { RaceManagement } from "@/components/race-management";
-import { LeaderAuth } from "@/components/leader-auth";
 import { useLeaderAuth } from "@/hooks/use-leader-auth";
 import { useChampionship } from "@/hooks/use-championship";
-import { Trophy, Flag, Car, Crown, LogOut, Zap } from "lucide-react";
+import { Trophy, Flag, Car, Crown, LogOut, Zap, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Footer } from "@/components/footer";
 import Image from "next/image";
 
 export default function Home() {
+  const router = useRouter();
   const { isAuthenticated, leader, logout } = useLeaderAuth();
   const {
     championship,
@@ -33,6 +34,10 @@ export default function Home() {
 
   const handleManageRaces = () => {
     setCurrentTab("management");
+  };
+
+  const handleLogin = () => {
+    router.push("/login");
   };
 
   if (loading) {
@@ -94,39 +99,53 @@ export default function Home() {
               </div>
             </div>
 
-            {isAuthenticated && leader && (
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
-                <div className="flex items-center gap-2 text-sm f1-card px-3 py-2 rounded">
-                  <Crown className="h-4 w-4 text-primary" />
-                  <span className="font-medium text-white">{leader.name}</span>
-                  {leader.isCreator && (
-                    <span className="text-xs bg-primary/20 text-primary px-2 py-1 rounded border border-primary/40">
-                      RACE DIRECTOR
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
+              {isAuthenticated && leader ? (
+                <>
+                  <div className="flex items-center gap-2 text-sm f1-card px-3 py-2 rounded">
+                    <Crown className="h-4 w-4 text-primary" />
+                    <span className="font-medium text-white">
+                      {leader.name}
                     </span>
-                  )}
-                </div>
-                <div className="flex gap-2 w-full sm:w-auto">
-                  <Button
-                    variant="default"
-                    size="sm"
-                    onClick={handleManageRaces}
-                    className="racing-button flex-1 sm:flex-none"
-                  >
-                    <Flag className="h-4 w-4 mr-2" />
-                    RACE CONTROL
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={logout}
-                    className="border-primary/50 hover:bg-primary/10 flex-1 sm:flex-none"
-                  >
-                    <LogOut className="h-4 w-4 mr-2" />
-                    LOGOUT
-                  </Button>
-                </div>
-              </div>
-            )}
+                    {leader.isCreator && (
+                      <span className="text-xs bg-primary/20 text-primary px-2 py-1 rounded border border-primary/40">
+                        RACE DIRECTOR
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex gap-2 w-full sm:w-auto">
+                    <Button
+                      variant="default"
+                      size="sm"
+                      onClick={handleManageRaces}
+                      className="racing-button flex-1 sm:flex-none"
+                    >
+                      <Flag className="h-4 w-4 mr-2" />
+                      RACE CONTROL
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={logout}
+                      className="border-primary/50 hover:bg-primary/10 flex-1 sm:flex-none"
+                    >
+                      <LogOut className="h-4 w-4 mr-2" />
+                      LOGOUT
+                    </Button>
+                  </div>
+                </>
+              ) : (
+                <Button
+                  variant="default"
+                  size="sm"
+                  onClick={handleLogin}
+                  className="racing-button w-full sm:w-auto"
+                >
+                  <LogIn className="h-4 w-4 mr-2" />
+                  LEADER LOGIN
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       </header>
@@ -135,24 +154,96 @@ export default function Home() {
       <main className="container mx-auto px-4 py-6 sm:py-8">
         {!isAuthenticated ? (
           <div className="space-y-6 sm:space-y-8">
-            <div className="text-center f1-card p-6 sm:p-8 rounded-lg">
-              <h2 className="text-2xl sm:text-3xl font-bold mb-4 lap-counter">
-                🏎️ WELCOME TO THE RACE
-              </h2>
-              <p className="text-muted-foreground mb-6 sm:mb-8 text-base sm:text-lg">
-                Access race control to manage events and results
-              </p>
-              <div className="w-48 sm:w-64 h-2 mx-auto bg-primary/30 rounded mb-6 sm:mb-8"></div>
+            {/* Championship Standings for non-authenticated users */}
+            <ChampionshipStandings standings={standings} />
+
+            {/* Rules Summary */}
+            <div className="f1-card p-4 sm:p-6 rounded-lg">
+              <h3 className="text-base sm:text-lg font-semibold mb-4 flex items-center gap-2">
+                📋 RACE REGULATIONS
+              </h3>
+              <div className="grid gap-4 sm:gap-6 lg:grid-cols-2 text-sm">
+                <div className="telemetry-data p-3 sm:p-4 rounded">
+                  <h4 className="font-medium mb-3 text-primary text-sm sm:text-base">
+                    📊 POSITION POINTS:
+                  </h4>
+                  <div className="space-y-2 text-muted-foreground">
+                    <div className="flex justify-between">
+                      <span className="race-position p1">1</span>
+                      <span>20 points</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="race-position p2">2</span>
+                      <span>17 points</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="race-position p3">3</span>
+                      <span>15 points</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="race-position points">4-5</span>
+                      <span>13, 11 points</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="race-position points">6-10</span>
+                      <span>9, 7, 5, 3, 1 points</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="race-position no-points">11-15</span>
+                      <span>0 points</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="telemetry-data p-3 sm:p-4 rounded">
+                  <h4 className="font-medium mb-3 text-primary text-sm sm:text-base">
+                    🏆 BONUS POINTS:
+                  </h4>
+                  <div className="space-y-2 text-muted-foreground">
+                    <div className="flex justify-between">
+                      <span>🏁 Participation</span>
+                      <span>+5 (not for Max)</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>🥇 Pole Position</span>
+                      <span>+2</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>⚡ Fastest Lap</span>
+                      <span>+2</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>🎯 Most Consistent</span>
+                      <span>+2</span>
+                    </div>
+                  </div>
+                  <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-primary/30">
+                    <h4 className="font-medium mb-2 text-primary text-sm sm:text-base">
+                      ⚙️ DROP RULE:
+                    </h4>
+                    <p className="text-muted-foreground text-xs sm:text-sm">
+                      Worst result per event is automatically discarded
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div className="grid gap-6 sm:gap-8 lg:grid-cols-2">
-              <div className="f1-card p-4 sm:p-6 rounded-lg">
-                <LeaderAuth />
-              </div>
-
-              <div className="space-y-4 sm:space-y-6">
-                <ChampionshipStandings standings={standings} />
-              </div>
+            {/* Call to action for leaders */}
+            <div className="text-center f1-card p-6 sm:p-8 rounded-lg">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-4 lap-counter">
+                🏎️ RACE LEADERS
+              </h2>
+              <p className="text-muted-foreground mb-6 sm:mb-8 text-base sm:text-lg">
+                Are you a race leader? Access race control to manage events and
+                results
+              </p>
+              <Button
+                onClick={handleLogin}
+                className="racing-button text-lg px-8 py-3"
+              >
+                <LogIn className="h-5 w-5 mr-2" />
+                ACCESS RACE CONTROL
+              </Button>
             </div>
           </div>
         ) : (
