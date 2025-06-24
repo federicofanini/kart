@@ -22,9 +22,9 @@ export async function POST(request: NextRequest) {
     if (!championship) {
       // Create initial championship
       championship = {
-        id: "championship-2024",
-        name: "Campionato Kart 2024",
-        season: "2024",
+        id: "championship-2025",
+        name: "Campionato Kart 2025",
+        season: "2025",
         drivers: [],
         events: [],
         leaders: [],
