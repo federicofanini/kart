@@ -1,0 +1,15 @@
+---
+description: Best practices for using Redis in applications
+globs: 
+alwaysApply: false
+---
+---
+name: redis-best-practices.mdc
+description: Best practices for using Redis in applications
+globs: **/*.{ts,js}
+---
+
+- Use Redis hashes to store driver scores and details efficiently.
+- Implement expiration for temporary data to manage memory usage.
+- Use transactions (MULTI/EXEC) for atomic updates when adding points.
+- Leverage Redis Pub/Sub for real-time leaderboard updates.

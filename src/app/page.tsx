@@ -10,6 +10,7 @@ import { useChampionship } from "@/hooks/use-championship";
 import { Trophy, Flag, Car, Crown, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Footer } from "@/components/footer";
+import Image from "next/image";
 
 export default function Home() {
   const { isAuthenticated, leader, logout } = useLeaderAuth();
@@ -56,13 +57,19 @@ export default function Home() {
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Car className="h-8 w-8 text-primary" />
+              <Image
+                src="/logo.png"
+                alt="Logo"
+                width={32}
+                height={32}
+                className="h-8 w-8 text-primary"
+              />
               <div>
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-500 via-yellow-500 to-yellow-600 bg-clip-text text-transparent">
-                  Campionato Kart 2024
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-red-600 via-red-500 to-red-700 bg-clip-text text-transparent tracking-tight">
+                  VIBRATA GRAND PRIX
                 </h1>
-                <p className="text-muted-foreground">
-                  Sistema di punteggio con regola scarto automatica
+                <p className="text-muted-foreground font-medium tracking-wide uppercase text-sm">
+                  Championship Points System with Drop Scores
                 </p>
               </div>
             </div>

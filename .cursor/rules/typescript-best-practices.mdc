@@ -1,0 +1,15 @@
+---
+description: TypeScript coding standards and type safety guidelines
+globs: 
+alwaysApply: false
+---
+---
+name: typescript-best-practices.mdc 
+description: TypeScript coding standards and type safety guidelines
+globs: **/*.{ts,tsx}
+---
+
+- Use strict null checks to avoid runtime errors.
+- Define interfaces for driver and race data structures for better type safety.
+- Utilize enums for fixed sets of values, such as race positions and bonus types.
+- Implement type guards to ensure data integrity when processing scores.

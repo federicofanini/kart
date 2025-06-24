@@ -1,0 +1,15 @@
+---
+description: Guidelines for UI components and styling with Tailwind/Shadcn
+globs: 
+alwaysApply: false
+---
+---
+name: ui-and-styling-best-practices.mdc
+description: Guidelines for UI components and styling with Tailwind/Shadcn
+globs: **/*.{ts,tsx,css}
+---
+
+- Use Tailwind CSS for responsive and modern UI design.
+- Follow Shadcn UI component guidelines for consistent styling.
+- Ensure accessibility in UI components, especially for leaderboard displays.
+- Implement loading states for asynchronous data fetching from the server.
