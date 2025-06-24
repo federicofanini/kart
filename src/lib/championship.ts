@@ -142,5 +142,8 @@ export function createSampleChampionship(): Championship {
     season: "2024",
     drivers: [],
     events: [],
+    leaders: [],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   };
 }

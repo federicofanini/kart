@@ -31,8 +31,10 @@ import { Plus, Flag, Clock, Zap, Calendar } from "lucide-react";
 
 interface RaceManagementProps {
   events: Event[];
-  onAddEvent: (event: Event) => void;
-  onUpdateEvent: (event: Event) => void;
+  onAddEvent: (event: Event) => Promise<{ success: boolean; error?: string }>;
+  onUpdateEvent: (
+    event: Event
+  ) => Promise<{ success: boolean; error?: string }>;
 }
 
 export function RaceManagement({
@@ -54,7 +56,7 @@ export function RaceManagement({
     participated: true,
   });
 
-  const createNewEvent = () => {
+  const createNewEvent = async () => {
     if (!newEventName || !newEventDate) return;
 
     const newEvent: Event = {
@@ -65,13 +67,25 @@ export function RaceManagement({
       race2Results: {},
     };
 
-    onAddEvent(newEvent);
-    setNewEventName("");
-    setNewEventDate("");
-    setIsNewEventOpen(false);
+    try {
+      const result = await onAddEvent(newEvent);
+      if (result.success) {
+        setNewEventName("");
+        setNewEventDate("");
+        setIsNewEventOpen(false);
+      } else {
+        console.error("Failed to create event:", result.error);
+        // You could show an error toast here
+      }
+    } catch (error) {
+      console.error("Error creating event:", error);
+    }
   };
 
-  const addRaceResult = (eventId: string, raceType: "race1" | "race2") => {
+  const addRaceResult = async (
+    eventId: string,
+    raceType: "race1" | "race2"
+  ) => {
     const event = events.find((e) => e.id === eventId);
     if (!event || !raceForm.driverName) return;
 
@@ -93,17 +107,25 @@ export function RaceManagement({
       },
     };
 
-    onUpdateEvent(updatedEvent);
-
-    // Reset form
-    setRaceForm({
-      driverName: "",
-      position: 1,
-      polePosition: false,
-      fastestLap: false,
-      mostConsistent: false,
-      participated: true,
-    });
+    try {
+      const result = await onUpdateEvent(updatedEvent);
+      if (result.success) {
+        // Reset form
+        setRaceForm({
+          driverName: "",
+          position: 1,
+          polePosition: false,
+          fastestLap: false,
+          mostConsistent: false,
+          participated: true,
+        });
+      } else {
+        console.error("Failed to update event:", result.error);
+        // You could show an error toast here
+      }
+    } catch (error) {
+      console.error("Error updating event:", error);
+    }
   };
 
   const formatDate = (dateString: string) => {
@@ -257,7 +279,7 @@ interface RaceResultsFormProps {
   results: Race[];
   raceForm: RaceForm;
   setRaceForm: (form: RaceForm) => void;
-  onAddResult: (eventId: string, raceType: "race1" | "race2") => void;
+  onAddResult: (eventId: string, raceType: "race1" | "race2") => Promise<void>;
 }
 
 function RaceResultsForm({

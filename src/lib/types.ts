@@ -29,6 +29,18 @@ export interface Championship {
   season: string;
   drivers: Driver[];
   events: Event[];
+  leaders: ChampionshipLeader[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ChampionshipLeader {
+  id: string;
+  name: string;
+  email: string;
+  token: string;
+  isCreator: boolean;
+  createdAt: string;
 }
 
 export interface DriverStandings {
