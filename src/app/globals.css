@@ -45,71 +45,71 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.147 0.004 49.25);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.147 0.004 49.25);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.147 0.004 49.25);
-  --primary: oklch(0.216 0.006 56.043);
-  --primary-foreground: oklch(0.985 0.001 106.423);
-  --secondary: oklch(0.97 0.001 106.424);
-  --secondary-foreground: oklch(0.216 0.006 56.043);
-  --muted: oklch(0.97 0.001 106.424);
-  --muted-foreground: oklch(0.553 0.013 58.071);
-  --accent: oklch(0.97 0.001 106.424);
-  --accent-foreground: oklch(0.216 0.006 56.043);
+  --background: oklch(0.02 0.01 240); /* Dark racing background */
+  --foreground: oklch(0.98 0.002 240); /* Almost white text */
+  --card: oklch(0.05 0.015 240); /* Dark card background */
+  --card-foreground: oklch(0.98 0.002 240);
+  --popover: oklch(0.05 0.015 240);
+  --popover-foreground: oklch(0.98 0.002 240);
+  --primary: oklch(0.6 0.24 15); /* F1 red */
+  --primary-foreground: oklch(0.98 0.002 240);
+  --secondary: oklch(0.15 0.02 240);
+  --secondary-foreground: oklch(0.98 0.002 240);
+  --muted: oklch(0.1 0.02 240);
+  --muted-foreground: oklch(0.6 0.01 240);
+  --accent: oklch(0.18 0.02 240);
+  --accent-foreground: oklch(0.98 0.002 240);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.923 0.003 48.717);
-  --input: oklch(0.923 0.003 48.717);
-  --ring: oklch(0.709 0.01 56.259);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0.001 106.423);
-  --sidebar-foreground: oklch(0.147 0.004 49.25);
-  --sidebar-primary: oklch(0.216 0.006 56.043);
-  --sidebar-primary-foreground: oklch(0.985 0.001 106.423);
-  --sidebar-accent: oklch(0.97 0.001 106.424);
-  --sidebar-accent-foreground: oklch(0.216 0.006 56.043);
-  --sidebar-border: oklch(0.923 0.003 48.717);
-  --sidebar-ring: oklch(0.709 0.01 56.259);
+  --border: oklch(0.2 0.02 240);
+  --input: oklch(0.15 0.02 240);
+  --ring: oklch(0.6 0.24 15);
+  --chart-1: oklch(0.6 0.24 15); /* F1 red */
+  --chart-2: oklch(0.55 0.15 120); /* Racing green */
+  --chart-3: oklch(0.65 0.2 260); /* Racing blue */
+  --chart-4: oklch(0.7 0.25 50); /* Racing yellow */
+  --chart-5: oklch(0.5 0.1 300); /* Racing purple */
+  --sidebar: oklch(0.05 0.015 240);
+  --sidebar-foreground: oklch(0.98 0.002 240);
+  --sidebar-primary: oklch(0.6 0.24 15);
+  --sidebar-primary-foreground: oklch(0.98 0.002 240);
+  --sidebar-accent: oklch(0.15 0.02 240);
+  --sidebar-accent-foreground: oklch(0.98 0.002 240);
+  --sidebar-border: oklch(0.2 0.02 240);
+  --sidebar-ring: oklch(0.6 0.24 15);
 }
 
 .dark {
-  --background: oklch(0.147 0.004 49.25);
-  --foreground: oklch(0.985 0.001 106.423);
-  --card: oklch(0.216 0.006 56.043);
-  --card-foreground: oklch(0.985 0.001 106.423);
-  --popover: oklch(0.216 0.006 56.043);
-  --popover-foreground: oklch(0.985 0.001 106.423);
-  --primary: oklch(0.923 0.003 48.717);
-  --primary-foreground: oklch(0.216 0.006 56.043);
-  --secondary: oklch(0.268 0.007 34.298);
-  --secondary-foreground: oklch(0.985 0.001 106.423);
-  --muted: oklch(0.268 0.007 34.298);
-  --muted-foreground: oklch(0.709 0.01 56.259);
-  --accent: oklch(0.268 0.007 34.298);
-  --accent-foreground: oklch(0.985 0.001 106.423);
+  --background: oklch(0.02 0.01 240);
+  --foreground: oklch(0.98 0.002 240);
+  --card: oklch(0.05 0.015 240);
+  --card-foreground: oklch(0.98 0.002 240);
+  --popover: oklch(0.05 0.015 240);
+  --popover-foreground: oklch(0.98 0.002 240);
+  --primary: oklch(0.6 0.24 15);
+  --primary-foreground: oklch(0.98 0.002 240);
+  --secondary: oklch(0.15 0.02 240);
+  --secondary-foreground: oklch(0.98 0.002 240);
+  --muted: oklch(0.1 0.02 240);
+  --muted-foreground: oklch(0.6 0.01 240);
+  --accent: oklch(0.18 0.02 240);
+  --accent-foreground: oklch(0.98 0.002 240);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.553 0.013 58.071);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.216 0.006 56.043);
-  --sidebar-foreground: oklch(0.985 0.001 106.423);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0.001 106.423);
-  --sidebar-accent: oklch(0.268 0.007 34.298);
-  --sidebar-accent-foreground: oklch(0.985 0.001 106.423);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.553 0.013 58.071);
+  --border: oklch(0.2 0.02 240);
+  --input: oklch(0.15 0.02 240);
+  --ring: oklch(0.6 0.24 15);
+  --chart-1: oklch(0.6 0.24 15);
+  --chart-2: oklch(0.55 0.15 120);
+  --chart-3: oklch(0.65 0.2 260);
+  --chart-4: oklch(0.7 0.25 50);
+  --chart-5: oklch(0.5 0.1 300);
+  --sidebar: oklch(0.05 0.015 240);
+  --sidebar-foreground: oklch(0.98 0.002 240);
+  --sidebar-primary: oklch(0.6 0.24 15);
+  --sidebar-primary-foreground: oklch(0.98 0.002 240);
+  --sidebar-accent: oklch(0.15 0.02 240);
+  --sidebar-accent-foreground: oklch(0.98 0.002 240);
+  --sidebar-border: oklch(0.2 0.02 240);
+  --sidebar-ring: oklch(0.6 0.24 15);
 }
 
 @layer base {
@@ -118,5 +118,146 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      sans-serif;
   }
+}
+
+/* F1 Racing Inspired Styles */
+.f1-gradient {
+  background: linear-gradient(
+    135deg,
+    oklch(0.6 0.24 15) 0%,
+    oklch(0.4 0.2 15) 50%,
+    oklch(0.2 0.1 15) 100%
+  );
+}
+
+.racing-stripes {
+  position: relative;
+}
+
+.racing-stripes::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 255, 255, 0.1) 2px,
+    rgba(255, 255, 255, 0.1) 4px
+  );
+  z-index: 1;
+}
+
+.racing-stripes > * {
+  position: relative;
+  z-index: 2;
+}
+
+.position-1 {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 215, 0, 0.2) 0%,
+    rgba(255, 215, 0, 0.1) 100%
+  );
+  border-left: 4px solid #ffd700;
+}
+
+.position-2 {
+  background: linear-gradient(
+    135deg,
+    rgba(192, 192, 192, 0.2) 0%,
+    rgba(192, 192, 192, 0.1) 100%
+  );
+  border-left: 4px solid #c0c0c0;
+}
+
+.position-3 {
+  background: linear-gradient(
+    135deg,
+    rgba(205, 127, 50, 0.2) 0%,
+    rgba(205, 127, 50, 0.1) 100%
+  );
+  border-left: 4px solid #cd7f32;
+}
+
+.f1-card {
+  background: linear-gradient(
+    135deg,
+    oklch(0.08 0.02 240) 0%,
+    oklch(0.05 0.015 240) 100%
+  );
+  border: 1px solid oklch(0.2 0.02 240);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.racing-button {
+  background: linear-gradient(
+    135deg,
+    oklch(0.6 0.24 15) 0%,
+    oklch(0.5 0.2 15) 100%
+  );
+  border: none;
+  box-shadow: 0 2px 10px rgba(220, 38, 38, 0.3);
+}
+
+.racing-button:hover {
+  box-shadow: 0 3px 15px rgba(220, 38, 38, 0.4);
+}
+
+/* Animations removed for better performance and accessibility */
+
+.checkered-flag {
+  background: repeating-conic-gradient(
+    from 0deg at 50% 50%,
+    #000 0deg 90deg,
+    #fff 90deg 180deg
+  );
+  background-size: 20px 20px;
+}
+
+.lap-counter {
+  font-family: "Courier New", monospace;
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(220, 38, 38, 0.5);
+}
+
+.telemetry-data {
+  font-family: "Courier New", monospace;
+  background: oklch(0.02 0.01 240);
+  border: 1px solid oklch(0.6 0.24 15);
+  color: oklch(0.8 0.1 120); /* Green telemetry color */
+}
+
+.race-position {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  font-weight: bold;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.race-position.p1 {
+  background: linear-gradient(135deg, #ffd700, #ffa500);
+}
+.race-position.p2 {
+  background: linear-gradient(135deg, #c0c0c0, #a0a0a0);
+}
+.race-position.p3 {
+  background: linear-gradient(135deg, #cd7f32, #b8860b);
+}
+.race-position.points {
+  background: linear-gradient(135deg, oklch(0.6 0.24 15), oklch(0.4 0.2 15));
+}
+.race-position.no-points {
+  background: linear-gradient(135deg, #666, #444);
 }

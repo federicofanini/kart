@@ -19,8 +19,10 @@ export interface Event {
   id: string;
   name: string;
   date: string;
-  race1Results: { [driverId: string]: Race };
-  race2Results: { [driverId: string]: Race };
+  races: { [raceId: string]: { [driverId: string]: Race } };
+  // Keep backward compatibility with existing data
+  race1Results?: { [driverId: string]: Race };
+  race2Results?: { [driverId: string]: Race };
 }
 
 export interface Championship {
@@ -48,10 +50,9 @@ export interface DriverStandings {
   totalPoints: number;
   raceResults: Array<{
     eventId: string;
-    race1Points: number;
-    race2Points: number;
+    racePoints: { [raceId: string]: number };
     discardedPoints: number; // The worse result that was discarded
-    finalPoints: number; // race1Points + race2Points - discardedPoints
+    finalPoints: number; // Sum of all races minus discarded points
   }>;
 }
 

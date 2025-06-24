@@ -40,41 +40,62 @@ export function calculateEventPoints(
   event: Event,
   driverId: string
 ): {
-  race1Points: number;
-  race2Points: number;
+  racePoints: { [raceId: string]: number };
   discardedPoints: number;
   finalPoints: number;
 } {
-  const driver = event.race1Results[driverId] || event.race2Results[driverId];
-  if (!driver) {
+  // Handle backward compatibility
+  const raceResults: { [raceId: string]: { [driverId: string]: Race } } = {};
+
+  if (event.races) {
+    // New format: multiple races
+    Object.assign(raceResults, event.races);
+  } else {
+    // Backward compatibility: race1Results and race2Results
+    if (event.race1Results) {
+      raceResults["race1"] = event.race1Results;
+    }
+    if (event.race2Results) {
+      raceResults["race2"] = event.race2Results;
+    }
+  }
+
+  const driverRacePoints: { [raceId: string]: number } = {};
+  let driverInfo: Driver | null = null;
+
+  // Calculate points for each race
+  Object.entries(raceResults).forEach(([raceId, raceData]) => {
+    const race = raceData[driverId];
+    if (race) {
+      if (!driverInfo) {
+        driverInfo = {
+          id: driverId,
+          name: race.name,
+          isMaxVerstappen: race.name.toLowerCase().includes("max verstappen"),
+        };
+      }
+      driverRacePoints[raceId] = calculateRacePoints(race, driverInfo);
+    } else {
+      driverRacePoints[raceId] = 0;
+    }
+  });
+
+  if (!driverInfo) {
     return {
-      race1Points: 0,
-      race2Points: 0,
+      racePoints: {},
       discardedPoints: 0,
       finalPoints: 0,
     };
   }
 
-  // Find driver info from the race data
-  const driverInfo: Driver = {
-    id: driverId,
-    name: driver.name,
-    isMaxVerstappen: driver.name.toLowerCase().includes("max verstappen"),
-  };
-
-  const race1 = event.race1Results[driverId];
-  const race2 = event.race2Results[driverId];
-
-  const race1Points = race1 ? calculateRacePoints(race1, driverInfo) : 0;
-  const race2Points = race2 ? calculateRacePoints(race2, driverInfo) : 0;
-
-  // Apply discard rule: discard the worse result
-  const discardedPoints = Math.min(race1Points, race2Points);
-  const finalPoints = race1Points + race2Points - discardedPoints;
+  // Apply discard rule: discard the worst result
+  const allPoints = Object.values(driverRacePoints);
+  const discardedPoints = allPoints.length > 1 ? Math.min(...allPoints) : 0;
+  const finalPoints =
+    allPoints.reduce((sum, points) => sum + points, 0) - discardedPoints;
 
   return {
-    race1Points,
-    race2Points,
+    racePoints: driverRacePoints,
     discardedPoints,
     finalPoints,
   };
@@ -89,24 +110,47 @@ export function calculateChampionshipStandings(
   const allDrivers = new Map<string, Driver>();
 
   championship.events.forEach((event) => {
-    Object.values(event.race1Results).forEach((race) => {
-      if (!allDrivers.has(race.id)) {
-        allDrivers.set(race.id, {
-          id: race.id,
-          name: race.name,
-          isMaxVerstappen: race.name.toLowerCase().includes("max verstappen"),
+    // Handle new format
+    if (event.races) {
+      Object.values(event.races).forEach((raceData) => {
+        Object.values(raceData).forEach((race) => {
+          if (!allDrivers.has(race.id)) {
+            allDrivers.set(race.id, {
+              id: race.id,
+              name: race.name,
+              isMaxVerstappen: race.name
+                .toLowerCase()
+                .includes("max verstappen"),
+            });
+          }
         });
-      }
-    });
-    Object.values(event.race2Results).forEach((race) => {
-      if (!allDrivers.has(race.id)) {
-        allDrivers.set(race.id, {
-          id: race.id,
-          name: race.name,
-          isMaxVerstappen: race.name.toLowerCase().includes("max verstappen"),
-        });
-      }
-    });
+      });
+    }
+
+    // Handle backward compatibility
+    if (event.race1Results) {
+      Object.values(event.race1Results).forEach((race) => {
+        if (!allDrivers.has(race.id)) {
+          allDrivers.set(race.id, {
+            id: race.id,
+            name: race.name,
+            isMaxVerstappen: race.name.toLowerCase().includes("max verstappen"),
+          });
+        }
+      });
+    }
+
+    if (event.race2Results) {
+      Object.values(event.race2Results).forEach((race) => {
+        if (!allDrivers.has(race.id)) {
+          allDrivers.set(race.id, {
+            id: race.id,
+            name: race.name,
+            isMaxVerstappen: race.name.toLowerCase().includes("max verstappen"),
+          });
+        }
+      });
+    }
   });
 
   allDrivers.forEach((driver, driverId) => {

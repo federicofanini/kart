@@ -13,3 +13,4 @@ globs: **/*.{ts,tsx}
 - Implement API routes for handling scoring logic and interactions with Redis.
 - Utilize server-side rendering (SSR) for dynamic leaderboard updates.
 - Ensure proper error handling in API routes to manage scoring events.
+- bun is our package manager.

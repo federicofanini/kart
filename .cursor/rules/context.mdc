@@ -1,0 +1,57 @@
+---
+description: Regolamento Campionato Kart e sistema di punteggio 
+globs: 
+alwaysApply: false
+---
+## 🏁 Regolamento Campionato Kart
+
+### 🔢 Sistema di Punteggio (per ogni gara)
+
+| Posizione | Punti Gara |
+|-----------|------------|
+| 1°        | 20         |
+| 2°        | 17         |
+| 3°        | 15         |
+| 4°        | 13         |
+| 5°        | 11         |
+| 6°        | 9          |
+| 7°        | 7          |
+| 8°        | 5          |
+| 9°        | 3          |
+| 10°       | 1          |
+| 11°–15°   | 0          |
+
+---
+
+### 🎁 Bonus Punti
+
+| Bonus                   | Punti | Descrizione                                                                 |
+|-------------------------|-------|------------------------------------------------------------------------------|
+| Partecipazione          | +5    | A tutti i piloti presenti alla gara (**eccetto Max Verstappen**)            |
+| Pole Position           | +2    | Al pilota con il miglior tempo in qualifica (partenza in pole)              |
+| Giro più veloce         | +2    | Al pilota con il giro più veloce durante la gara (sia Gara 1 che Gara 2)    |
+| Pilota più costante     | +2    | Al pilota con i tempi sul giro più regolari (sia Gara 1 che Gara 2)         |
+
+---
+
+### 🏎️ Struttura della giornata
+
+- Ogni appuntamento prevede **due gare distinte**: Gara 1 e Gara 2.  
+- I punti per posizione **e bonus** vengono assegnati **separatamente in ciascuna gara**.
+
+---
+
+### 🗑️ Regola Scarto Peggior Risultato
+
+- Per ogni appuntamento, il pilota deve **scartare il peggior risultato** di **una sola gara tra Gara 1 e Gara 2** (compresi eventuali bonus).
+- Lo scarto si applica **alla fine del campionato**, **prima del calcolo della classifica finale**.
+- Questa regola serve a compensare **errori o assenze occasionali**, dando comunque valore all'altra gara dello stesso appuntamento.
+
+---
+
+### 📌 Note Finali
+
+- Il punteggio totale di ogni pilota è la **somma di tutti i punti ottenuti**, escluso il **peggior risultato scartato**.
+- La **classifica finale** determinerà il vincitore del campionato.
+- Eventuali controversie saranno **risolte in accordo dal gruppo**.
+- 🧨 **Max Verstappen non riceve punti alla partecipazione**, per rendere il campionato più avvincente e competitivo!
