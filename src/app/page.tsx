@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ChampionshipStandings } from "@/components/championship-standings";
 import { RaceManagement } from "@/components/race-management";
@@ -16,6 +17,11 @@ export default function Home() {
     useChampionship({
       leaderToken: isAuthenticated ? leader?.token : null,
     });
+  const [currentTab, setCurrentTab] = useState("standings");
+
+  const handleManageRaces = () => {
+    setCurrentTab("management");
+  };
 
   if (loading) {
     return (
@@ -72,6 +78,15 @@ export default function Home() {
                     </span>
                   )}
                 </div>
+                <Button
+                  variant="default"
+                  size="sm"
+                  onClick={handleManageRaces}
+                  className="bg-primary hover:bg-primary/90"
+                >
+                  <Flag className="h-4 w-4 mr-2" />
+                  Gestisci Gare
+                </Button>
                 <Button variant="outline" size="sm" onClick={logout}>
                   <LogOut className="h-4 w-4 mr-2" />
                   Esci
@@ -107,7 +122,11 @@ export default function Home() {
             </div>
           </div>
         ) : (
-          <Tabs defaultValue="standings" className="w-full">
+          <Tabs
+            value={currentTab}
+            onValueChange={setCurrentTab}
+            className="w-full"
+          >
             <TabsList className="grid w-full grid-cols-2 mb-8">
               <TabsTrigger
                 value="standings"
