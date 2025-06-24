@@ -348,71 +348,120 @@ export function RaceManagement({
 
   return (
     <div className="space-y-6">
-      {/* Points Information Card */}
-      <Card className="border-blue-200 bg-blue-50/50">
-        <CardHeader>
-          <div className="flex items-center gap-2">
-            <Info className="h-5 w-5 text-blue-600" />
-            <CardTitle className="text-blue-900">
-              Championship Points System
-            </CardTitle>
-          </div>
-          <CardDescription className="text-blue-700">
-            Points are calculated according to the official kart championship
-            rules
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+      {/* Championship Points System Card - F1 Style */}
+      <Card className="f1-card border-primary/30">
+        <CardHeader className="racing-stripes">
+          <div className="flex items-center gap-3">
+            <Info className="h-6 w-6 text-primary" />
             <div>
-              <h4 className="font-semibold text-blue-900 mb-2">
-                Position Points
+              <CardTitle className="lap-counter text-xl">
+                🏁 CHAMPIONSHIP POINTS SYSTEM
+              </CardTitle>
+              <CardDescription className="text-lg mt-1">
+                Official Kart Racing Points Structure
+              </CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="telemetry-data p-4 rounded">
+              <h4 className="font-bold mb-4 lap-counter text-lg">
+                🏆 POSITION POINTS
               </h4>
-              <div className="grid grid-cols-2 gap-1 text-sm">
+              <div className="grid grid-cols-2 gap-2">
                 {Object.entries(POSITION_POINTS)
                   .filter(([, points]) => points > 0)
                   .map(([position, points]) => (
-                    <div key={position} className="flex justify-between">
-                      <span>{position}°:</span>
-                      <span className="font-mono">{points} pts</span>
+                    <div
+                      key={position}
+                      className={`flex justify-between p-2 rounded border ${
+                        position === "1"
+                          ? "bg-yellow-500/20 border-yellow-500/50 text-yellow-300"
+                          : position === "2"
+                          ? "bg-gray-400/20 border-gray-400/50 text-gray-300"
+                          : position === "3"
+                          ? "bg-orange-600/20 border-orange-600/50 text-orange-300"
+                          : parseInt(position) <= 10
+                          ? "bg-primary/20 border-primary/50"
+                          : "bg-muted/50 border-muted"
+                      }`}
+                    >
+                      <span className="font-semibold">P{position}</span>
+                      <span className="font-mono font-bold">{points} PTS</span>
                     </div>
                   ))}
               </div>
             </div>
-            <div>
-              <h4 className="font-semibold text-blue-900 mb-2">Bonus Points</h4>
-              <div className="space-y-1 text-sm">
-                <div className="flex justify-between">
-                  <span>Participation:</span>
-                  <span className="font-mono">
-                    +{BONUS_POINTS.PARTICIPATION} pts
+
+            <div className="telemetry-data p-4 rounded">
+              <h4 className="font-bold mb-4 lap-counter text-lg">
+                ⚡ BONUS POINTS
+              </h4>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center p-3 bg-green-500/20 border border-green-500/50 rounded">
+                  <span className="flex items-center gap-2">
+                    <span>🎯</span>
+                    <span className="font-semibold">PARTICIPATION</span>
+                  </span>
+                  <span className="font-mono font-bold text-green-300">
+                    +{BONUS_POINTS.PARTICIPATION} PTS
                   </span>
                 </div>
-                <div className="flex justify-between">
-                  <span>Pole Position:</span>
-                  <span className="font-mono">
-                    +{BONUS_POINTS.POLE_POSITION} pts
+                <div className="flex justify-between items-center p-3 bg-blue-500/20 border border-blue-500/50 rounded">
+                  <span className="flex items-center gap-2">
+                    <Flag className="h-4 w-4" />
+                    <span className="font-semibold">POLE POSITION</span>
+                  </span>
+                  <span className="font-mono font-bold text-blue-300">
+                    +{BONUS_POINTS.POLE_POSITION} PTS
                   </span>
                 </div>
-                <div className="flex justify-between">
-                  <span>Fastest Lap:</span>
-                  <span className="font-mono">
-                    +{BONUS_POINTS.FASTEST_LAP} pts
+                <div className="flex justify-between items-center p-3 bg-purple-500/20 border border-purple-500/50 rounded">
+                  <span className="flex items-center gap-2">
+                    <span>⚡</span>
+                    <span className="font-semibold">FASTEST LAP</span>
+                  </span>
+                  <span className="font-mono font-bold text-purple-300">
+                    +{BONUS_POINTS.FASTEST_LAP} PTS
                   </span>
                 </div>
-                <div className="flex justify-between">
-                  <span>Most Consistent:</span>
-                  <span className="font-mono">
-                    +{BONUS_POINTS.MOST_CONSISTENT} pts
+                <div className="flex justify-between items-center p-3 bg-orange-500/20 border border-orange-500/50 rounded">
+                  <span className="flex items-center gap-2">
+                    <Clock className="h-4 w-4" />
+                    <span className="font-semibold">MOST CONSISTENT</span>
+                  </span>
+                  <span className="font-mono font-bold text-orange-300">
+                    +{BONUS_POINTS.MOST_CONSISTENT} PTS
                   </span>
                 </div>
               </div>
             </div>
           </div>
-          <div className="text-xs text-blue-600 bg-blue-100 p-2 rounded">
-            <strong>Note:</strong> Max Verstappen does not receive participation
-            bonus points. The worst result from each event is automatically
-            dropped from the final championship calculation.
+
+          <div className="racing-stripes p-4 rounded border border-primary/30">
+            <div className="flex items-start gap-3">
+              <Info className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+              <div className="space-y-2 text-sm">
+                <p className="font-semibold text-primary">
+                  🏎️ CHAMPIONSHIP REGULATIONS
+                </p>
+                <ul className="space-y-1 text-muted-foreground">
+                  <li>
+                    • <strong>Max Verstappen</strong> does not receive
+                    participation bonus points
+                  </li>
+                  <li>
+                    • <strong>Drop Rule:</strong> Worst result from each event
+                    is automatically discarded
+                  </li>
+                  <li>
+                    • <strong>Points Limit:</strong> Only positions 1-10 earn
+                    championship points
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
