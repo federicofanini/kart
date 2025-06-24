@@ -2,7 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { Championship, Event } from "@/lib/types";
-import { calculateChampionshipStandings } from "@/lib/championship";
+import {
+  calculateChampionshipStandings,
+  toggleWorstResult,
+} from "@/lib/championship";
 
 interface UseChampionshipProps {
   leaderToken?: string | null;
@@ -95,6 +98,155 @@ export function useChampionship({ leaderToken }: UseChampionshipProps = {}) {
     return updateChampionship(updatedChampionship);
   };
 
+  const deleteEvent = async (eventId: string) => {
+    if (!championship)
+      return { success: false, error: "No championship loaded" };
+
+    const updatedChampionship = {
+      ...championship,
+      events: championship.events.filter((event) => event.id !== eventId),
+    };
+
+    return updateChampionship(updatedChampionship);
+  };
+
+  const deleteRace = async (eventId: string, raceId: string) => {
+    if (!championship)
+      return { success: false, error: "No championship loaded" };
+
+    const event = championship.events.find((e) => e.id === eventId);
+    if (!event) {
+      return { success: false, error: "Event not found" };
+    }
+
+    let updatedEvent;
+    if (raceId === "race1" || raceId === "race2") {
+      // Backward compatibility
+      updatedEvent = {
+        ...event,
+        [raceId === "race1" ? "race1Results" : "race2Results"]: undefined,
+      };
+    } else {
+      // New format
+      const newRaces = { ...event.races };
+      delete newRaces[raceId];
+      updatedEvent = {
+        ...event,
+        races: newRaces,
+      };
+    }
+
+    return updateEvent(updatedEvent);
+  };
+
+  const deleteDriverFromRace = async (
+    eventId: string,
+    raceId: string,
+    driverId: string
+  ) => {
+    if (!championship)
+      return { success: false, error: "No championship loaded" };
+
+    const event = championship.events.find((e) => e.id === eventId);
+    if (!event) {
+      return { success: false, error: "Event not found" };
+    }
+
+    let updatedEvent;
+    if (raceId === "race1" || raceId === "race2") {
+      // Backward compatibility
+      const raceResults =
+        event[raceId === "race1" ? "race1Results" : "race2Results"];
+      if (raceResults) {
+        const newResults = { ...raceResults };
+        delete newResults[driverId];
+        updatedEvent = {
+          ...event,
+          [raceId === "race1" ? "race1Results" : "race2Results"]: newResults,
+        };
+      } else {
+        return { success: false, error: "Race not found" };
+      }
+    } else {
+      // New format
+      if (event.races && event.races[raceId]) {
+        const newRaceData = { ...event.races[raceId] };
+        delete newRaceData[driverId];
+        updatedEvent = {
+          ...event,
+          races: {
+            ...event.races,
+            [raceId]: newRaceData,
+          },
+        };
+      } else {
+        return { success: false, error: "Race not found" };
+      }
+    }
+
+    return updateEvent(updatedEvent);
+  };
+
+  const deleteDriverFromChampionship = async (driverId: string) => {
+    if (!championship)
+      return { success: false, error: "No championship loaded" };
+
+    // Remove driver from all events
+    const updatedEvents = championship.events.map((event) => {
+      const updatedEvent = { ...event };
+
+      // Remove from new format races
+      if (event.races) {
+        const newRaces: typeof event.races = {};
+        Object.entries(event.races).forEach(([raceId, raceData]) => {
+          const newRaceData = { ...raceData };
+          delete newRaceData[driverId];
+          newRaces[raceId] = newRaceData;
+        });
+        updatedEvent.races = newRaces;
+      }
+
+      // Remove from backward compatibility format
+      if (event.race1Results) {
+        const newRace1Results = { ...event.race1Results };
+        delete newRace1Results[driverId];
+        updatedEvent.race1Results = newRace1Results;
+      }
+
+      if (event.race2Results) {
+        const newRace2Results = { ...event.race2Results };
+        delete newRace2Results[driverId];
+        updatedEvent.race2Results = newRace2Results;
+      }
+
+      return updatedEvent;
+    });
+
+    const updatedChampionship = {
+      ...championship,
+      events: updatedEvents,
+    };
+
+    return updateChampionship(updatedChampionship);
+  };
+
+  const toggleWorstResultForDriver = async (
+    driverId: string,
+    eventId: string,
+    raceId: string
+  ) => {
+    if (!championship)
+      return { success: false, error: "No championship loaded" };
+
+    const updatedChampionship = toggleWorstResult(
+      championship,
+      driverId,
+      eventId,
+      raceId
+    );
+    return updateChampionship(updatedChampionship);
+  };
+
   useEffect(() => {
     fetchChampionship();
   }, []);
@@ -106,6 +258,11 @@ export function useChampionship({ leaderToken }: UseChampionshipProps = {}) {
     error,
     addEvent,
     updateEvent,
+    deleteEvent,
+    deleteRace,
+    deleteDriverFromRace,
+    deleteDriverFromChampionship,
+    toggleWorstResultForDriver,
     refetch: fetchChampionship,
   };
 }

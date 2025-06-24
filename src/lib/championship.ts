@@ -61,9 +61,10 @@ export function calculateEventPoints(
   }
 
   const driverRacePoints: { [raceId: string]: number } = {};
+  const races: { [raceId: string]: Race } = {};
   let driverInfo: Driver | null = null;
 
-  // Calculate points for each race
+  // Calculate points for each race and store race data
   Object.entries(raceResults).forEach(([raceId, raceData]) => {
     const race = raceData[driverId];
     if (race) {
@@ -74,6 +75,7 @@ export function calculateEventPoints(
           isMaxVerstappen: race.name.toLowerCase().includes("max verstappen"),
         };
       }
+      races[raceId] = race;
       driverRacePoints[raceId] = calculateRacePoints(race, driverInfo);
     } else {
       driverRacePoints[raceId] = 0;
@@ -88,11 +90,26 @@ export function calculateEventPoints(
     };
   }
 
-  // Apply discard rule: discard the worst result
-  const allPoints = Object.values(driverRacePoints);
-  const discardedPoints = allPoints.length > 1 ? Math.min(...allPoints) : 0;
+  // Apply discard rule: discard the worst result per event
+  // Check if any race has manual override (isDropped = true)
+  let discardedPoints = 0;
+  const manuallyDroppedRace = Object.entries(races).find(
+    ([, race]) => race.isDropped
+  );
+
+  if (manuallyDroppedRace) {
+    // Use manually dropped race
+    const [droppedRaceId] = manuallyDroppedRace;
+    discardedPoints = driverRacePoints[droppedRaceId] || 0;
+  } else {
+    // Auto-drop worst result if there are multiple races
+    const allPoints = Object.values(driverRacePoints);
+    discardedPoints = allPoints.length > 1 ? Math.min(...allPoints) : 0;
+  }
+
   const finalPoints =
-    allPoints.reduce((sum, points) => sum + points, 0) - discardedPoints;
+    Object.values(driverRacePoints).reduce((sum, points) => sum + points, 0) -
+    discardedPoints;
 
   return {
     racePoints: driverRacePoints,
@@ -176,6 +193,71 @@ export function calculateChampionshipStandings(
 
   // Sort by total points (descending)
   return standings.sort((a, b) => b.totalPoints - a.totalPoints);
+}
+
+export function toggleWorstResult(
+  championship: Championship,
+  driverId: string,
+  eventId: string,
+  raceId: string
+): Championship {
+  // Find the event and race
+  const event = championship.events.find((e) => e.id === eventId);
+  if (!event) return championship;
+
+  let race: Race | undefined;
+  let updatedEvent = { ...event };
+
+  // Handle both new format and backward compatibility
+  if (raceId === "race1" || raceId === "race2") {
+    // Backward compatibility
+    const raceResults =
+      event[raceId === "race1" ? "race1Results" : "race2Results"];
+    if (raceResults && raceResults[driverId]) {
+      race = raceResults[driverId];
+      const updatedRaceResults = {
+        ...raceResults,
+        [driverId]: {
+          ...race,
+          isDropped: !race.isDropped, // Toggle the dropped status
+        },
+      };
+      updatedEvent = {
+        ...event,
+        [raceId === "race1" ? "race1Results" : "race2Results"]:
+          updatedRaceResults,
+      };
+    }
+  } else {
+    // New format
+    if (event.races && event.races[raceId] && event.races[raceId][driverId]) {
+      race = event.races[raceId][driverId];
+      const updatedRace = {
+        ...race,
+        isDropped: !race.isDropped, // Toggle the dropped status
+      };
+      updatedEvent = {
+        ...event,
+        races: {
+          ...event.races,
+          [raceId]: {
+            ...event.races[raceId],
+            [driverId]: updatedRace,
+          },
+        },
+      };
+    }
+  }
+
+  // Update the championship with the modified event
+  const updatedChampionship = {
+    ...championship,
+    events: championship.events.map((e) =>
+      e.id === eventId ? updatedEvent : e
+    ),
+  };
+
+  return updatedChampionship;
 }
 
 // Sample data for testing

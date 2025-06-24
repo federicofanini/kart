@@ -13,6 +13,7 @@ export interface Race {
   fastestLap: boolean;
   mostConsistent: boolean;
   participated: boolean;
+  isDropped?: boolean; // Manual override for drop rule
 }
 
 export interface Event {

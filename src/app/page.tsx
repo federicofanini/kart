@@ -14,10 +14,21 @@ import Image from "next/image";
 
 export default function Home() {
   const { isAuthenticated, leader, logout } = useLeaderAuth();
-  const { championship, standings, loading, error, addEvent, updateEvent } =
-    useChampionship({
-      leaderToken: isAuthenticated ? leader?.token : null,
-    });
+  const {
+    championship,
+    standings,
+    loading,
+    error,
+    addEvent,
+    updateEvent,
+    deleteEvent,
+    deleteRace,
+    deleteDriverFromRace,
+    deleteDriverFromChampionship,
+    toggleWorstResultForDriver,
+  } = useChampionship({
+    leaderToken: isAuthenticated ? leader?.token : null,
+  });
   const [currentTab, setCurrentTab] = useState("standings");
 
   const handleManageRaces = () => {
@@ -172,17 +183,23 @@ export default function Home() {
                 standings={standings}
                 isLeader={isAuthenticated && !!leader}
                 onDeleteDriver={async (driverId) => {
-                  // TODO: Implement delete driver functionality
-                  console.log("Delete driver:", driverId);
+                  const result = await deleteDriverFromChampionship(driverId);
+                  if (!result.success) {
+                    console.error("Failed to delete driver:", result.error);
+                  }
                 }}
                 onToggleWorstResult={async (driverId, eventId, raceId) => {
-                  // TODO: Implement toggle worst result functionality
-                  console.log(
-                    "Toggle worst result:",
+                  const result = await toggleWorstResultForDriver(
                     driverId,
                     eventId,
                     raceId
                   );
+                  if (!result.success) {
+                    console.error(
+                      "Failed to toggle worst result:",
+                      result.error
+                    );
+                  }
                 }}
               />
 
@@ -264,24 +281,32 @@ export default function Home() {
                 onAddEvent={addEvent}
                 onUpdateEvent={updateEvent}
                 onDeleteEvent={async (eventId) => {
-                  // TODO: Implement delete event functionality
-                  console.log("Delete event:", eventId);
-                  return { success: true };
+                  const result = await deleteEvent(eventId);
+                  if (!result.success) {
+                    console.error("Failed to delete event:", result.error);
+                  }
+                  return result;
                 }}
                 onDeleteRace={async (eventId, raceId) => {
-                  // TODO: Implement delete race functionality
-                  console.log("Delete race:", eventId, raceId);
-                  return { success: true };
+                  const result = await deleteRace(eventId, raceId);
+                  if (!result.success) {
+                    console.error("Failed to delete race:", result.error);
+                  }
+                  return result;
                 }}
                 onDeleteDriver={async (eventId, raceId, driverId) => {
-                  // TODO: Implement delete driver from race functionality
-                  console.log(
-                    "Delete driver from race:",
+                  const result = await deleteDriverFromRace(
                     eventId,
                     raceId,
                     driverId
                   );
-                  return { success: true };
+                  if (!result.success) {
+                    console.error(
+                      "Failed to delete driver from race:",
+                      result.error
+                    );
+                  }
+                  return result;
                 }}
               />
             </TabsContent>
